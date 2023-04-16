@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JS + CSS Clock</title>
+  <link rel="icon" href="https://fav.farm/🔥" />
+</head>
+<body>
+
+
+    <div class="clock">
+      <div class="clock-face">
+        <div class="hand hour-hand"></div>
+        <div class="hand min-hand"></div>
+        <div class="hand second-hand"></div>
+      </div>
+    </div>
+
+
+  <style>
+    html {
+      background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
+      background-size: cover;
+      font-family: 'helvetica neue';
+      text-align: center;
+      font-size: 10px;
+    }
+
+    body {
+      margin: 0;
+      font-size: 2rem;
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .clock {
+      width: 30rem;
+      height: 30rem;
+      border: 20px solid white;
+      border-radius: 50%;
+      margin: 50px auto;
+      position: relative;
+      padding: 2rem;
+      box-shadow:
+        0 0 0 4px rgba(0,0,0,0.1),
+        inset 0 0 0 3px #EFEFEF,
+        inset 0 0 10px black,
+        0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .clock-face {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      /* transform: translateY(-3px); */
+       /* account for the height of the clock hands ,这里是因为指针设定为6px，所以整个clock-face向上移动-3px*/
+    }
+    .clock-face:after{
+      content:'';
+      display: block;
+      width:35px;
+      height: 35px;
+      border-radius: 100%;
+      background-color: rgb(240, 10, 10);
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+    }
+    .hand {
+      position: absolute;
+      /* top: 100%;
+      left: 100%; 如果本身不指定这两个默认就是这两个*/
+      width: 100%;
+      height: 100%;
+      /* transform-origin: right; 因为将指针设立为：after元素了，转动的是整个hand盒子，所以不用指定轴心*/
+
+    }
+    .hour-hand:after{
+      content:'';
+      display: block;
+      position: absolute;
+      width: 10px;
+      height: 30%;
+      left: 50%;
+      bottom:50%;
+      background-color: red;
+      transform: translateX(-50%);
+    }
+    .min-hand:after{
+      content:'';
+      display: block;
+      position: absolute;
+      left: 50%;
+      bottom:50%;
+      background-color: rgb(63, 95, 55);
+      width: 5px;
+      height: 40%;
+      transform: translateX(-50%);
+    }
+    .second-hand:after{
+      content:'';
+      display: block;
+      position: absolute;
+      left: 50%;
+      bottom:50%;
+      background-color: rgb(0, 0, 0);
+      width: 5px;
+      height: 45%;
+      transform: translateX(-50%);
+    }
+  </style>
+
+  <script>
+    ;(function(){
+      const hourHand=document.querySelector('.hour-hand');
+      const minHand=document.querySelector('.min-hand');
+      const secHand=document.querySelector('.second-hand');
+    function setDate(){
+       const now= new Date();
+      const secondNow=now.getSeconds();
+      const secRound=(secondNow*6);//一个间隔6度
+      secHand.style.transform=`rotate(${secRound}deg)`
+
+      const minNow=now.getMinutes(); 
+      const minRound=(minNow*6)+(secondNow*6)/60;//这里也是，多少分钟就是多少个6度,60s/6deg=secondnow/deg
+      minHand.style.transform=`rotate(${minRound}deg)`
+
+      const hourNow=now.getHours();
+      const hourRound=(hourNow*30)+(minNow*30)/60;//一小时30度嘛 60分钟一个30度，那么minNow对应时针60min/30deg=minnow/deg
+      hourHand.style.transform=`rotate(${hourRound}deg)`
+
+}
+     setInterval(setDate, 1000);
+     setDate();
+    })()
+
+  </script>
+</body>
+</html>
